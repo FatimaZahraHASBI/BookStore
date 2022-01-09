@@ -6,19 +6,19 @@ Application web - Symfony 5.4
 Il s’agit d'une application Symfony 5.4 qui est appelée bookstore. L’application
 gèrer quatre entités :
     ● Une entité "Auteur" qui comporte les propriétés suivantes :
-         ○ "nom_prenom" qui doit être unique.
-         ○ "sexe" qui devra valoir soit M soit F.
-         ○ "date_de_naissance" qui devra correspondre à une date valide
-         ○ "nationalite" qui devra correspondre à un pays
+          "nom_prenom" qui doit être unique.
+          "sexe" qui devra valoir soit M soit F.
+          "date_de_naissance" qui devra correspondre à une date valide
+          "nationalite" qui devra correspondre à un pays
     ● Une entité "Livre" qui comporte les propriétés suivantes :
-         ○ "isbn" : code isbn 13 respectant les critères de validation. Voir explication sur
+          "isbn" : code isbn 13 respectant les critères de validation. Voir explication sur
             wikipédia et les validateurs dans la documentation Symfony.
-         ○ "titre" : titre du livre
-         ○ "nombre_pages" : nombre de pages du livre (entier strictement positif)
-         ○ "date_de_parution" : date de publication
-         ○ "note" : entier compris entre 0 et 20
+          "titre" : titre du livre
+          "nombre_pages" : nombre de pages du livre (entier strictement positif)
+          "date_de_parution" : date de publication
+          "note" : entier compris entre 0 et 20
     ● Une entité "Genre" qui comporte la propriété :
-         ○ "nom" qui doit être unique
+          "nom" qui doit être unique
     ● Une entité "User" qui aura des rôles dans la gestion de l’application.
 
 # Relations entre les entités :
