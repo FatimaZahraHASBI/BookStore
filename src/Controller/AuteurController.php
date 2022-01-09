@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/auteur")
@@ -28,6 +29,7 @@ class AuteurController extends AbstractController
 
     /**
      * @Route("/new", name="auteur_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -60,6 +62,7 @@ class AuteurController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="auteur_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Auteur $auteur, EntityManagerInterface $entityManager): Response
     {
@@ -80,10 +83,11 @@ class AuteurController extends AbstractController
 
     /**
      * @Route("/{id}", name="auteur_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Auteur $auteur, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$auteur->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $auteur->getId(), $request->request->get('_token'))) {
             $entityManager->remove($auteur);
             $entityManager->flush();
         }

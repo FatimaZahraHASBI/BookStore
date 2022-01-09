@@ -1,43 +1,118 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Livre index{% endblock %}
-
+{% block title %}Bookstore
+{% endblock %}
 {% block body %}
-    <h1>Livre index</h1>
+	<div class="fixed-background">
+		<img src="assets/img/book3.png" style="height:650px; width:2000px"/>
+	</div>
+	<div style="margin-left:130px ; padding-left:10px; margin-top:90px">
+		<div style="float:left">
+			<form method="POST" onsubmit="chercher(event)">
+				Trouver un livre
+				<input id="motCle" type="text" class="form-control" placeholder="Nom du livre">
+				<button class="btn btn-warning my-2">Chercher</button>
+			</form>
+		</div>
+		<div style="float:left; margin-left: 20px;">
+			<form method="POST" onsubmit="list(event)">
+				Date de parution comprise entre deux années
+				<div>
+					<div style="float:left">
+						<input id="dateMin" type="number" class="form-control" placeholder="Année">
+					</div>
+					<div style="float:left; margin-left: 10px">
+						<input id="dateMax" type="number" class="form-control" placeholder="Année">
+					</div>
+				</div>
+				<button class="btn btn-warning my-2">Lister</button>
+			</form>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Isbn</th>
-                <th>Titre</th>
-                <th>Nombre_pages</th>
-                <th>Date_de_parution</th>
-                <th>Note</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for livre in livres %}
-            <tr>
-                <td>{{ livre.id }}</td>
-                <td>{{ livre.isbn }}</td>
-                <td>{{ livre.titre }}</td>
-                <td>{{ livre.nombrePages }}</td>
-                <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
-                <td>{{ livre.note }}</td>
-                <td>
-                    <a href="{{ path('livre_show', {'id': livre.id}) }}">show</a>
-                    <a href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		</div>
+		<div style="float:left; padding-top:30px; padding-bottom:80px">
+			<div style="float:left; margin-left: 10px; padding-top:14px; float:left">
+				Filtrer selon
+			</div>
+			<div style="float:left; margin-left: 10px">
+				<select class="form-select mt-2" onchange="filtrerParNote(event)">
+					<option selected>Note</option>
+					{% for i in 0..20 %}
+						<option value="{{ i }}">{{ i }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div style="float:left; margin-left: 10px">
+				<select class="form-select mt-2" onchange="filtrerParDate(event)">
+					<option selected>Date de publication</option>
+					{% for date in dates|sort  %}
+						<option value="{{date.date_de_parution|date("m/d/Y")}}">{{date.date_de_parution|date("m/d/Y")}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div style="float:left; margin-left: 10px">
+				<select class="form-select mt-2" onchange="filtrerParAuteur(event)">
+					<option selected>Auteur</option>
+					{% for auteur in auteurs %}
+						<option value="{{auteur.id}}">{{auteur.nomPrenom}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div style="float:left; margin-left: 10px">
+				<select class="form-select mt-2" onchange="filtrerParGenre(event)">
+					<option selected>Genre</option>
+					{% for genre in genres %}
+						<option value="{{genre.id}}">{{genre.nom}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="container front" style="align:center">
+		<table id="livres" class="table mt-5">
+			<thead>
+				<tr>
+					<th>Isbn</th>
+					<th>Titre</th>
+					<th>Nombre de pages</th>
+					<th>Date de parution</th>
+					<th>Note</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for livre in livres %}
+					<tr>
+						<td>{{ livre.isbn }}</td>
+						<td>{{ livre.titre }}</td>
+						<td>{{ livre.nombrePages }}</td>
+						<td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
 
-    <a href="{{ path('livre_new') }}">Create new</a>
+						<td>
+							<span id="livre-note-{{ livre.id }}">{{ livre.note }}</span>
+						</td>
+
+
+						<td>
+							<a class="btn btn-primary" href="{{ path('livre_show', {'id': livre.id}) }}">Afficher</a>
+							{% if is_granted('ROLE_ADMIN') %}
+								<a class="btn btn-info" href="{{ path('livre_edit', {'id': livre.id}) }}">Modifier</a>
+								{{ include('livre/_delete_form.html.twig') }}
+							{% endif %}
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="7">Aucun résultat</td>
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="btn btn-primary" href="{{ path('livre_new') }}">Ajouter</a>
+		{% endif %}
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="assets/js/main.js"></script>
 {% endblock %}

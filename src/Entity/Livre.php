@@ -22,6 +22,7 @@ class Livre
 
     /**
      * @ORM\Column(type="string", length=13)
+     * @Assert\Regex("/97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]$/")
      */
     private $isbn;
 
@@ -182,5 +183,11 @@ class Livre
         $this->genres->removeElement($genre);
 
         return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->titre;
     }
 }

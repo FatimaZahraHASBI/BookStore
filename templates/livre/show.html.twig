@@ -1,42 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Livre{% endblock %}
+{% block title %}Livre
+{% endblock %}
 
 {% block body %}
-    <h1>Livre</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ livre.id }}</td>
-            </tr>
-            <tr>
-                <th>Isbn</th>
-                <td>{{ livre.isbn }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ livre.titre }}</td>
-            </tr>
-            <tr>
-                <th>Nombre_pages</th>
-                <td>{{ livre.nombrePages }}</td>
-            </tr>
-            <tr>
-                <th>Date_de_parution</th>
-                <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Note</th>
-                <td>{{ livre.note }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<div style="float:left; margin-top:30px">
+		<h1>Détail du livre</h1>
+	</div>
+	<a class="btn btn-primary" style="margin-top:40px; margin-left:15px" href="{{ path('livre_index') }}">back to list</a>
 
-    <a href="{{ path('livre_index') }}">back to list</a>
 
-    <a href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
-
-    {{ include('livre/_delete_form.html.twig') }}
-{% endblock %}
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ livre.id }}</td>
+			</tr>
+			<tr>
+				<th>Isbn</th>
+				<td>{{ livre.isbn }}</td>
+			</tr>
+			<tr>
+				<th>Titre</th>
+				<td>{{ livre.titre }}</td>
+			</tr>
+			<tr>
+				<th>Nombre_pages</th>
+				<td>{{ livre.nombrePages }}</td>
+			</tr>
+			<tr>
+				<th>Date_de_parution</th>
+				<td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Note</th>
+				<td>{{ livre.note }}</td>
+			</tr>
+			<tr>
+				<th>Auteurs</th>
+				{% for auteur in livre.auteurs %}
+					<td>{{ auteur.nomPrenom }}</td>
+				{% endfor %}
+			</tr>
+			<tr>
+				<th>Genres</th>
+				{% for genre in livre.genres %}
+					<td>{{ genre.nom }}</td>
+				{% endfor %}
+			</tr>
+		</tbody>
+	</tr>
+</tbody></table>{% if is_granted('ROLE_ADMIN') %}
+<div style="margin-top:30px">
+	<div style="float:left">
+		<a class="btn btn-info" style="margin-left:5px" href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
+	</div>
+	<div style="float:left; margin-left:5px">
+		{{ include('livre/_delete_form.html.twig') }}
+	</div>
+</div>{% endif %}{% endblock %}

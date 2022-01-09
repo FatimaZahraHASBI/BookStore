@@ -34,17 +34,20 @@ class Auteur
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Assert\Choice({"F", "M"})
      */
     private $sexe;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\Type("DateTime")
      */
     private $date_de_naissance;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Assert\Country
      */
     private $nationalite;
 
@@ -133,5 +136,10 @@ class Auteur
         $this->livres->removeElement($livre);
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom_prenom;
     }
 }
