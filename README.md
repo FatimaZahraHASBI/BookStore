@@ -1,6 +1,7 @@
 # BookStore
 Application web - Symfony 5.4
 
+![bookstore](https://user-images.githubusercontent.com/63150702/148683887-2332001c-3688-4634-a39f-f060864a8e3a.PNG)
 
 # Présentation du projet
 Il s’agit d'une application Symfony 5.4 qui est appelée bookstore.  <br />L’application
